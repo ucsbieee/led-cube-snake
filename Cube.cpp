@@ -21,30 +21,21 @@ void Cube::bufferLED(byte x, byte y, byte z)
 
   // Convert the x,y position to a mapping of the format used for the buffer
   /* 
-   *  (1, 1) --> 1
-   *  (1, 2) --> 10
-   *  (1, 3) --> 100
+   *  (1, 1) --> 1                 -> 1
+   *  (1, 2) --> 10                -> 2
+   *  (1, 3) --> 100               -> 4
    *  ...
-   *  (4, 4) --> 1000000000000000
+   *  (4, 4) --> 1000000000000000  -> 32768
   */
-  unsigned char mapped = pow(2, (size*(x - 1) + (y - 1)));
+  unsigned short mapped = pow(2, (size*(x - 1) + (y - 1)));
   
   // Add the LED to the buffer
   buffer[z - 1] = buffer[z - 1] | mapped;
 }
 
-void Cube::display()
-{
-  // Display the contents of the buffer
-  update(buffer);
-  // Reset the buffer
-  for (byte i = 0; i < size; i++) buffer[i] = 0;
-}
-
 void Cube::reset()
 {
-  // Reset the buffer
-  for (byte i = 0; i < size; i++) buffer[i] = 0;
+  clearBuffer();
   
   // Clear the layer shift register
   digitalWrite(RESET, LOW);
@@ -61,7 +52,7 @@ void Cube::reset()
   digitalWrite(SET, LOW);
 }
 
-void Cube::update(unsigned char data[])
+void Cube::display()
 {
   // Update each layer (z-axis)
   for (byte i = 0; i < size; i++)
@@ -70,7 +61,7 @@ void Cube::update(unsigned char data[])
     for (byte j = 0; j < size*size; j++)
     {
       // Retrieve the state of bit j on the current layer
-      unsigned char curr = (data[i] >> (size*size - 1 - j)) &  1;
+      byte curr = (buffer[i] >> (size*size - 1 - j)) &  1;
       // Load in the bit
       digitalWrite(SERIAL_IN, curr);
       // Toggle the input clock to push the bit through
@@ -97,5 +88,11 @@ void Cube::update(unsigned char data[])
     // Toggle the update clock to work with the selected layer
     digitalWrite(UPDATE_CLK, LOW);
   }
+  clearBuffer(); 
+}
+
+void Cube::clearBuffer()
+{
+  for (byte i = 0; i < size; i++) buffer[i] = 0;
 }
 

@@ -22,13 +22,13 @@
 class Cube
 {
   public:
-    // Instantiates a NxNxN cube
+    // Initializes the cube
     Cube();
 
-    // Adds an LED to the buffer at position (x, y, z) with range 1 - size
+    // Adds an LED to the buffer at position (x, y, z) with range (1, size)
     void bufferLED(byte x, byte y, byte z);
 
-    // Parses the data from the buffer and displays the frame
+    // Parses the data from the buffer, displays the frame, then clears the buffer
     void display();
 
     // Resets the system
@@ -37,11 +37,10 @@ class Cube
   private:
     const static byte size = 4;
     const static int period = 5;
-    unsigned char buffer[size];
+    unsigned short buffer[size];
 
-    // Updates and displays one frame, each array element is one layer of the cube
-    // Format is a hex character where the MSB is the first LED
-    void update(unsigned char data[]);
+    // Emptys the contents of the buffer
+    void clearBuffer();
 };
 
 #endif // CUBE_H

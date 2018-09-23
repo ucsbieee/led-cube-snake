@@ -1,12 +1,11 @@
 /*
  * File:     ledcube.ino
  * Author:   Jeff Longo
- * Comments: UCSB IEEE LED Cube project
+ * Comments: UCSB IEEE LED cube snake project
 */
 
 #include "Cube.h"
 
-// Initializes the cube
 Cube cube;
 
 void setup() 
