@@ -14,10 +14,10 @@ Cube::Cube()
   reset();
 }
 
-void Cube::bufferLED(byte x, byte y, byte z)
+void Cube::bufferLED(coord c)
 {
   // Ensure the specified LED is within the bounds of the cube
-  if (x < 1 || x > size || y < 1 || y > size || z < 1 || z > size) return;
+  if (c.x > (size - 1)|| c.y > (size - 1) || c.z > (size - 1)) return;
 
   // Convert the x,y position to a mapping of the format used for the buffer
   /* 
@@ -27,10 +27,10 @@ void Cube::bufferLED(byte x, byte y, byte z)
    *  ...
    *  (4, 4) --> 1000000000000000  -> 32768
   */
-  unsigned short mapped = pow(2, (size*(x - 1) + (y - 1)));
+  unsigned short mapped = pow(2, (size*c.x + c.y));
   
   // Add the LED to the buffer
-  buffer[z - 1] = buffer[z - 1] | mapped;
+  buffer[c.z] = buffer[c.z] | mapped;
 }
 
 void Cube::reset()
@@ -95,4 +95,3 @@ void Cube::clearBuffer()
 {
   for (byte i = 0; i < size; i++) buffer[i] = 0;
 }
-

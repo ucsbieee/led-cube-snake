@@ -19,14 +19,19 @@
 #define SET        7
 // End pin definitions
 
+struct coord
+{
+  byte x, y, z;
+};
+
 class Cube
 {
   public:
     // Initializes the cube
     Cube();
 
-    // Adds an LED to the buffer at position (x, y, z) with range (1, size)
-    void bufferLED(byte x, byte y, byte z);
+    // Adds an LED to the buffer at position (x, y, z) with range (0, size - 1)
+    void bufferLED(coord c);
 
     // Parses the data from the buffer, displays the frame, then clears the buffer
     void display();
