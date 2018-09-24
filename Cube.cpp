@@ -17,7 +17,7 @@ Cube::Cube()
 void Cube::bufferLED(coord c)
 {
   // Ensure the specified LED is within the bounds of the cube
-  if (c.x > (size - 1)|| c.y > (size - 1) || c.z > (size - 1)) return;
+  if (c.x > (size - 1) || c.y > (size - 1) || c.z > (size - 1)) return;
 
   // Convert the x,y position to a mapping of the format used for the buffer
   /* 
