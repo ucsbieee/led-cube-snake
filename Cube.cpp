@@ -9,9 +9,25 @@ Cube::Cube()
   pinMode(UPDATE_CLK, OUTPUT);
   pinMode(RESET, OUTPUT);
   pinMode(SET, OUTPUT);
+}
 
-  // Start the layer shift register from a known state
-  reset();
+void Cube::bufferLED(byte x, byte y, byte z)
+{
+  // Ensure the specified LED is within the bounds of the cube
+  if (x > (size - 1) || y > (size - 1) || z > (size - 1)) return;
+
+  // Convert the x,y position to a mapping of the format used for the buffer
+  /* 
+   *  (1, 1) --> 1                 -> 1
+   *  (1, 2) --> 10                -> 2
+   *  (1, 3) --> 100               -> 4
+   *  ...
+   *  (4, 4) --> 1000000000000000  -> 32768
+  */
+  unsigned short mapped = pow(2, (x + size*y));
+  
+  // Add the LED to the buffer
+  buffer[z] = buffer[z] | mapped;
 }
 
 void Cube::bufferLED(coord c)
@@ -36,19 +52,18 @@ void Cube::bufferLED(coord c)
 void Cube::reset()
 {
   clearBuffer();
-  
   // Clear the layer shift register
   digitalWrite(RESET, LOW);
-  delay(period);
+  delayMicroseconds(period);
   digitalWrite(RESET, HIGH);
-  delay(period);
+  delayMicroseconds(period);
   // Start the layer shift register
   digitalWrite(SET, HIGH);
-  delay(period);
+  delayMicroseconds(period);
   digitalWrite(UPDATE_CLK, HIGH);
-  delay(period);
+  delayMicroseconds(period);
   digitalWrite(UPDATE_CLK, LOW);
-  delay(period);
+  delayMicroseconds(period); // probably not necessary
   digitalWrite(SET, LOW);
 }
 
@@ -67,24 +82,24 @@ void Cube::display()
       // Toggle the input clock to push the bit through
       digitalWrite(INPUT_CLK, HIGH);
       // Provide time for the input to update
-      delay(period);
+      delayMicroseconds(period);
       // Toggle the input clock to wait for the next bit
       digitalWrite(INPUT_CLK, LOW);
       // Provide time to wait for the next bit
-      delay(period);
+      delayMicroseconds(period);
     }
     // Toggle the latch clock to save the output
     digitalWrite(LATCH_CLK, HIGH);
     // Provide time for the output to latch
-    delay(period);
+    delayMicroseconds(period);
     // Toggle the latch clock before loading new data
     digitalWrite(LATCH_CLK, LOW);
     // Provide time before changing the layer
-    delay(period);
+    delayMicroseconds(period);
     // Toggle the update clock to switch to the next layer
     digitalWrite(UPDATE_CLK, HIGH);
     // Provide time to switch layers
-    delay(period);
+    delayMicroseconds(period);
     // Toggle the update clock to work with the selected layer
     digitalWrite(UPDATE_CLK, LOW);
   }

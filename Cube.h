@@ -31,6 +31,7 @@ class Cube
     Cube();
 
     // Adds an LED to the buffer at position (x, y, z) with range (0, size - 1)
+    void bufferLED(byte x, byte y, byte z);
     void bufferLED(coord c);
 
     // Parses the data from the buffer, displays the frame, then clears the buffer
@@ -41,7 +42,7 @@ class Cube
     
   private:
     const static byte size = 4;
-    const static int period = 5;
+    const static int period = 100;
     unsigned short buffer[size];
 
     // Emptys the contents of the buffer
