@@ -30,9 +30,15 @@ void setup()
 
 void loop() 
 {
-  for (int k = 0; k < 4; k++)
+  for (int i = 0; i < 4; i++)
   {
-    cube.bufferLED(0, 0, k);
+    for (int j = 0; j < 4; j++)
+    {
+      for (int k = 0; k < 4; k++)
+      {
+        cube.bufferLED(k, j, i);
+        cube.display(50);
+      }
+    }
   }
-  cube.display();
 }

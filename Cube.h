@@ -35,7 +35,7 @@ class Cube
     void bufferLED(coord c);
 
     // Parses the data from the buffer, displays the frame, then clears the buffer
-    void display();
+    void display(int duration);
 
     // Resets the system
     void reset();
