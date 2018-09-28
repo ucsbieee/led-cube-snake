@@ -30,28 +30,16 @@ void Cube::bufferLED(byte x, byte y, byte z)
   buffer[z] = buffer[z] | mapped;
 }
 
-void Cube::bufferLED(coord c)
+void Cube::clearBuffer()
 {
-  // Ensure the specified LED is within the bounds of the cube
-  if (c.x > (size - 1) || c.y > (size - 1) || c.z > (size - 1)) return;
-
-  // Convert the x,y position to a mapping of the format used for the buffer
-  /* 
-   *  (0, 0) --> 000000000000001   -> 1
-   *  (0, 1) --> 000000000000010   -> 2
-   *  (0, 2) --> 000000000000100   -> 4
-   *  ...
-   *  (3, 3) --> 1000000000000000  -> 32768
-  */
-  unsigned short mapped = pow(2, (c.x + size*c.y)) + 0.5;
-  
-  // Add the LED to the buffer
-  buffer[c.z] = buffer[c.z] | mapped;
+  for (byte i = 0; i < size; i++) buffer[i] = 0;
 }
 
 void Cube::reset()
 {
   clearBuffer();
+  // Remove any active LEDs
+  display();
   // Clear the layer shift register
   digitalWrite(RESET, LOW);
   delayMicroseconds(period);
@@ -67,55 +55,40 @@ void Cube::reset()
   digitalWrite(SET, LOW);
 }
 
-void Cube::display(int duration)
+void Cube::display()
 {
-  unsigned long startTime = millis();
-  unsigned long elapsed = 0;
-
-  // Loop for the specified duration
-  while (elapsed < duration)
+  // Update each layer (z-axis)
+  for (byte i = 0; i < size; i++)
   {
-    elapsed = millis() - startTime;
-    
-    // Update each layer (z-axis)
-    for (byte i = 0; i < size; i++)
+    // Update x-y plane
+    for (byte j = 0; j < size*size; j++)
     {
-      // Update x-y plane
-      for (byte j = 0; j < size*size; j++)
-      {
-        // Retrieve the state of bit j on the current layer
-        byte curr = (buffer[i] >> (size*size - 1 - j)) &  1;
-        // Load in the bit
-        digitalWrite(SERIAL_IN, curr);
-        // Toggle the input clock to push the bit through
-        digitalWrite(INPUT_CLK, HIGH);
-        // Provide time for the input to update
-        delayMicroseconds(period);
-        // Toggle the input clock to wait for the next bit
-        digitalWrite(INPUT_CLK, LOW);
-        // Provide time to wait for the next bit
-        delayMicroseconds(period);
-      }
-      // Toggle the latch clock to save the output
-      digitalWrite(LATCH_CLK, HIGH);
-      // Provide time for the output to latch
+      // Retrieve the state of bit j on the current layer
+      byte curr = (buffer[i] >> (size*size - 1 - j)) &  1;
+      // Load in the bit
+      digitalWrite(SERIAL_IN, curr);
+      // Toggle the input clock to push the bit through
+      digitalWrite(INPUT_CLK, HIGH);
+      // Provide time for the input to update
       delayMicroseconds(period);
-      // Toggle the latch clock before loading new data
-      digitalWrite(LATCH_CLK, LOW);
-      // Provide time before changing the layer
+      // Toggle the input clock to wait for the next bit
+      digitalWrite(INPUT_CLK, LOW);
+      // Provide time to wait for the next bit
       delayMicroseconds(period);
-      // Toggle the update clock to switch to the next layer
-      digitalWrite(UPDATE_CLK, HIGH);
-      // Provide time to switch layers
-      delayMicroseconds(period);
-      // Toggle the update clock to work with the selected layer
-      digitalWrite(UPDATE_CLK, LOW);
     }
+    // Toggle the latch clock to save the output
+    digitalWrite(LATCH_CLK, HIGH);
+    // Provide time for the output to latch
+    delayMicroseconds(period);
+    // Toggle the latch clock before loading new data
+    digitalWrite(LATCH_CLK, LOW);
+    // Provide time before changing the layer
+    delayMicroseconds(period);
+    // Toggle the update clock to switch to the next layer
+    digitalWrite(UPDATE_CLK, HIGH);
+    // Provide time to switch layers
+    delayMicroseconds(period);
+    // Toggle the update clock to work with the selected layer
+    digitalWrite(UPDATE_CLK, LOW);
   }
-  clearBuffer();
-}
-
-void Cube::clearBuffer()
-{
-  for (byte i = 0; i < size; i++) buffer[i] = 0;
 }

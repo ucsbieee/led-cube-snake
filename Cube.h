@@ -19,11 +19,6 @@
 #define SET        7
 // End pin definitions
 
-struct coord
-{
-  byte x, y, z;
-};
-
 class Cube
 {
   public:
@@ -32,11 +27,13 @@ class Cube
 
     // Adds an LED to the buffer at position (x, y, z) with range (0, size - 1)
     void bufferLED(byte x, byte y, byte z);
-    void bufferLED(coord c);
 
     // Parses the data from the buffer, displays the frame, then clears the buffer
-    void display(int duration);
+    void display();
 
+    // Emptys the contents of the buffer
+    void clearBuffer();
+    
     // Resets the system
     void reset();
     
@@ -44,9 +41,6 @@ class Cube
     const static byte size = 4;
     const static int period = 100;
     unsigned short buffer[size];
-
-    // Emptys the contents of the buffer
-    void clearBuffer();
 };
 
 #endif // CUBE_H
