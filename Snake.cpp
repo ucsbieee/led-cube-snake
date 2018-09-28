@@ -14,7 +14,7 @@ void Snake::start()
 
 void Snake::update()
 {
-  prevDir = dir;
+  io.saveDir();
   // Repeat the display and input polling for the duration of one frame
   unsigned long startTime = millis();
   unsigned long elapsed = 0;
@@ -22,7 +22,7 @@ void Snake::update()
   {
     elapsed = millis() - startTime;
     cube.display();
-    io.update(prevDir, dir);
+    io.update();
   }
   // Reset the buffer and prepare data for the next frame
   cube.clearBuffer();
@@ -52,7 +52,6 @@ void Snake::init()
   io.init();
   dead = false;
   frameTime = 500;
-  dir = prevDir = xpos;
   
   // Init snake location
   snake.push_front({0, 0, 0});
@@ -70,7 +69,7 @@ void Snake::logic()
   Coord next;
 
   // Check if the next location is valid
-  switch (dir)
+  switch (io.getDir())
   {
     case xpos:
       {

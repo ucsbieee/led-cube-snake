@@ -30,9 +30,19 @@ class InputHandler
     void pollForStart();
 
     // Polls for input and handles the snake's direction
-    void update(Direction prevDir, Direction& dir);
+    void update();
+
+    // Updates prevDir for the next frame
+    void saveDir();
+    
+    // Set the current direction
+    void setDir(Direction dir) { this->dir = dir; }
+
+    // Get the current direction
+    Direction getDir(){ return dir; }
 
   private:
+    Direction dir, prevDir;
     bool released;
     unsigned long timeOfUpRelease, timeOfDownRelease;
   

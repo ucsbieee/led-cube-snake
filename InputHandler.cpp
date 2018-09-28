@@ -11,6 +11,7 @@ InputHandler::InputHandler()
 
 void InputHandler::init()
 {
+  dir = prevDir = xpos;
   timeOfUpRelease = timeOfDownRelease = 0;
   released = true;
 }
@@ -20,7 +21,7 @@ void InputHandler::pollForStart()
   while (!digitalRead(START));
 }
 
-void InputHandler::update(Direction prevDir, Direction& dir)
+void InputHandler::update()
 {
   if (digitalRead(UP))
   {
@@ -79,4 +80,9 @@ void InputHandler::update(Direction prevDir, Direction& dir)
     }
     released = true;
   }
+}
+
+void InputHandler::saveDir()
+{
+  prevDir = dir;
 }

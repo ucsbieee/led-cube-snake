@@ -51,10 +51,9 @@ class Snake
     Cube cube;
     bool m[4][4][4];
     std::deque<Coord> snake;
-    InputHandler io;
-    bool dead = false;
-    Direction dir, prevDir;
     Coord food;
+    InputHandler io;
+    bool dead;
     int frameTime;
 };
 
