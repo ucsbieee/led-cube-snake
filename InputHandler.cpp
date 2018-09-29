@@ -33,7 +33,7 @@ void InputHandler::update()
       dir = zpos;
     }
     // Prevent direction switch if a double up press just occurred
-    else if (prevDir != yneg && (dir != zpos || (millis() - timeOfUpRelease > 500)))
+    else if (prevDir != yneg && (dir != zpos || (millis() - timeOfUpRelease > 400)))
     {
       dir = ypos;
     }
@@ -49,7 +49,7 @@ void InputHandler::update()
       dir = zneg;
     }
     // Prevent direction switch if a double down press just occurred
-    else if (prevDir != ypos && (dir != zneg || (millis() - timeOfDownRelease > 500)))
+    else if (prevDir != ypos && (dir != zneg || (millis() - timeOfDownRelease > 400)))
     {
       dir = yneg;
     }
