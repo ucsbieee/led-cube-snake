@@ -18,11 +18,17 @@ void Snake::update()
   // Repeat the display and input polling for the duration of one frame
   unsigned long startTime = millis();
   unsigned long elapsed = 0;
+  int blinkCounter = 0;
   while (elapsed < frameTime)
   {
-    elapsed = millis() - startTime;
+    // Blink the food LED every 10 updates
+    if (blinkCounter++ % 10 == 0)
+    {
+      cube.toggleLED(food.x, food.y, food.z);
+    }
     cube.display();
     io.update();
+    elapsed = millis() - startTime;
   }
   // Reset the buffer and prepare data for the next frame
   cube.clearBuffer();

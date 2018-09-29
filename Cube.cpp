@@ -47,6 +47,11 @@ void Cube::bufferFromMatrix(bool m[size][size][size])
   }
 }
 
+void Cube::toggleLED(byte x, byte y, byte z)
+{
+   buffer[z] ^= 1 << (x + size*y);
+}
+
 void Cube::clearBuffer()
 {
   for (byte i = 0; i < size; i++) buffer[i] = 0;

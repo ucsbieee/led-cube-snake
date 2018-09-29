@@ -36,6 +36,9 @@ class Cube
     // Buffer LEDs from a 3D boolean matrix
     void bufferFromMatrix(bool m[size][size][size]);
 
+    // Switches the state of an LED at position (x, y, z) with range (0, size - 1)
+    void toggleLED(byte x, byte y, byte z);
+
     // Parses the data from the buffer, displays the frame, then clears the buffer
     void display();
 
