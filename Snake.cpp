@@ -9,14 +9,17 @@ Snake::Snake()
 void Snake::start()
 {
   int i = 0, k = 1;
-  while (!io.pollForStart())
+  while (!io.startPressed())
   {
+    // Play a start pattern
     cube.bufferLED(i, 0, 0);
     cube.bufferLED(3 - i, 0, 1);
     cube.bufferLED(i, 0, 2);
     cube.bufferLED(3 - i, 0, 3);
     i += k*1;
     if (i >= 3 || i <= 0) k *= -1;
+
+    // Update the display
     unsigned long startTime = millis();
     unsigned long elapsed = 0;
     while (elapsed < 100)
@@ -51,6 +54,8 @@ void Snake::update()
   // Reset the buffer and prepare data for the next frame
   cube.clearBuffer();
   logic();
+
+  // If the snake dies, pause the display before ending the game
   if (dead)
   {
     cube.bufferFromMatrix(m);
@@ -70,6 +75,7 @@ void Snake::reset()
   snake.clear();
   cube.reset();
 
+  // Reset the map matrix
   for (byte x = 0; x < 4; x++)
   {
     for (byte y = 0; y < 4; y++)
@@ -161,6 +167,7 @@ void Snake::logic()
 
 void Snake::generateFood()
 {
+  // Find an available slot for the food
   do
   {
     food = { random(4), random(4), random(4) };

@@ -16,7 +16,7 @@ void InputHandler::init()
   released = true;
 }
 
-bool InputHandler::pollForStart()
+bool InputHandler::startPressed()
 {
   return digitalRead(START) ? true : false;
 }

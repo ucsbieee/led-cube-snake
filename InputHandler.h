@@ -26,8 +26,8 @@ class InputHandler
     // Initializes runtime variables
     void init();
     
-    // Waits for a start button press
-    bool pollForStart();
+    // Checks for a start button press
+    bool startPressed();
 
     // Polls for input and handles the snake's direction
     void update();
