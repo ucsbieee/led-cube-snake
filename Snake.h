@@ -45,9 +45,6 @@ class Snake
     // Generates a new food piece
     void generateFood();
 
-    // Loads map data to the LED cube
-    void bufferFromMatrix();
-
     Cube cube;
     bool m[4][4][4];
     std::deque<Coord> snake;

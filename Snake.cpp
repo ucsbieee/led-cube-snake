@@ -61,7 +61,7 @@ void Snake::init()
   generateFood();
   
   // Illuminate the snake and food LEDs
-  bufferFromMatrix();
+  cube.bufferFromMatrix(m);
 }
 
 void Snake::logic()
@@ -117,7 +117,7 @@ void Snake::logic()
   snake.push_front(next);
 
   // Write the data
-  bufferFromMatrix();
+  cube.bufferFromMatrix(m);
 }
 
 void Snake::generateFood()
@@ -128,21 +128,4 @@ void Snake::generateFood()
   } while (m[food.x][food.y][food.z]);
   
   m[food.x][food.y][food.z] = 1;
-}
-
-void Snake::bufferFromMatrix()
-{
-  for (byte x = 0; x < 4; x++)
-  {
-    for (byte y = 0; y < 4; y++)
-    {
-      for (byte z = 0; z < 4; z++)
-      {
-        if (m[x][y][z])
-        {
-          cube.bufferLED(x, y, z);
-        }
-      }
-    }
-  }
 }

@@ -42,7 +42,7 @@ class InputHandler
     Direction getDir(){ return dir; }
 
   private:
-    Direction dir, prevDir;
+    Direction dir, prevDir, lastButtonPressed;
     bool released;
     unsigned long timeOfUpRelease, timeOfDownRelease;
   

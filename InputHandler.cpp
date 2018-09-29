@@ -11,7 +11,7 @@ InputHandler::InputHandler()
 
 void InputHandler::init()
 {
-  dir = prevDir = xpos;
+  dir = prevDir = lastButtonPressed = xpos;
   timeOfUpRelease = timeOfDownRelease = 0;
   released = true;
 }
@@ -25,8 +25,10 @@ void InputHandler::update()
 {
   if (digitalRead(UP))
   {
+    lastButtonPressed = ypos;
+    
     // Detect double up press
-    if (prevDir != zneg && (millis() - timeOfUpRelease < 150))
+    if (prevDir != zneg && lastButtonPressed == ypos && (millis() - timeOfUpRelease < 150))
     {
       dir = zpos;
     }
@@ -39,8 +41,10 @@ void InputHandler::update()
   }
   else if (digitalRead(DOWN))
   {
+    lastButtonPressed = yneg;
+    
     // Detect double down press
-    if (prevDir != zpos && (millis() - timeOfDownRelease < 150))
+    if (prevDir != zpos && lastButtonPressed == yneg && (millis() - timeOfDownRelease < 150))
     {
       dir = zneg;
     }
@@ -53,6 +57,8 @@ void InputHandler::update()
   }
   else if (digitalRead(RIGHT))
   {
+    lastButtonPressed = xpos;
+    
     if (prevDir != xneg)
     {
       dir = xpos;
@@ -61,6 +67,8 @@ void InputHandler::update()
   }
   else if (digitalRead(LEFT))
   {
+    lastButtonPressed = xneg;
+    
     if (prevDir != xpos)
     {
       dir = xneg;
@@ -70,11 +78,11 @@ void InputHandler::update()
   // Detect up or down button releases
   else if (!released)
   {
-    if (dir == ypos)
+    if (lastButtonPressed == ypos)
     {
       timeOfUpRelease = millis();
     }
-    else if (dir == yneg)
+    else if (lastButtonPressed == yneg)
     {
       timeOfDownRelease = millis();
     }
