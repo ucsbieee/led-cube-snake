@@ -30,6 +30,23 @@ void Cube::bufferLED(byte x, byte y, byte z)
   buffer[z] = buffer[z] | mapped;
 }
 
+void Cube::bufferFromMatrix(bool m[size][size][size])
+{
+  for (byte x = 0; x < 4; x++)
+  {
+    for (byte y = 0; y < 4; y++)
+    {
+      for (byte z = 0; z < 4; z++)
+      {
+        if (m[x][y][z])
+        {
+          bufferLED(x, y, z);
+        }
+      }
+    }
+  }
+}
+
 void Cube::clearBuffer()
 {
   for (byte i = 0; i < size; i++) buffer[i] = 0;

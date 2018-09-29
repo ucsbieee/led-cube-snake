@@ -21,12 +21,20 @@
 
 class Cube
 {
+  private:
+    const static byte size = 4;
+    const static int period = 100;
+    unsigned short buffer[size];
+    
   public:
     // Initializes the cube
     Cube();
 
     // Adds an LED to the buffer at position (x, y, z) with range (0, size - 1)
     void bufferLED(byte x, byte y, byte z);
+
+    // Buffer LEDs from a 3D boolean matrix
+    void bufferFromMatrix(bool m[size][size][size]);
 
     // Parses the data from the buffer, displays the frame, then clears the buffer
     void display();
@@ -36,11 +44,6 @@ class Cube
     
     // Resets the system
     void reset();
-    
-  private:
-    const static byte size = 4;
-    const static int period = 100;
-    unsigned short buffer[size];
 };
 
 #endif // CUBE_H
