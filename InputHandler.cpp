@@ -16,9 +16,9 @@ void InputHandler::init()
   released = true;
 }
 
-void InputHandler::pollForStart()
+bool InputHandler::pollForStart()
 {
-  while (!digitalRead(START));
+  return digitalRead(START) ? true : false;
 }
 
 void InputHandler::update()

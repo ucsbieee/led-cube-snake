@@ -27,7 +27,7 @@ class InputHandler
     void init();
     
     // Waits for a start button press
-    void pollForStart();
+    bool pollForStart();
 
     // Polls for input and handles the snake's direction
     void update();

@@ -8,7 +8,25 @@ Snake::Snake()
 
 void Snake::start()
 {
-  io.pollForStart();
+  int i = 0, k = 1;
+  while (!io.pollForStart())
+  {
+    cube.bufferLED(i, 0, 0);
+    cube.bufferLED(3 - i, 0, 1);
+    cube.bufferLED(i, 0, 2);
+    cube.bufferLED(3 - i, 0, 3);
+    i += k*1;
+    if (i >= 3 || i <= 0) k *= -1;
+    unsigned long startTime = millis();
+    unsigned long elapsed = 0;
+    while (elapsed < 100)
+    {
+      cube.display();
+      io.update();
+      elapsed = millis() - startTime;
+    }
+    cube.clearBuffer();
+  }
   init();
 }
 
@@ -33,6 +51,18 @@ void Snake::update()
   // Reset the buffer and prepare data for the next frame
   cube.clearBuffer();
   logic();
+  if (dead)
+  {
+    cube.bufferFromMatrix(m);
+    cube.bufferLED(food.x, food.y, food.z);
+    startTime = millis();
+    elapsed = 0;
+    while (elapsed < 1000)
+    {
+      cube.display();
+      elapsed = millis() - startTime;
+    }
+  }
 }
 
 void Snake::reset()
@@ -54,6 +84,9 @@ void Snake::reset()
 
 void Snake::init()
 {
+  // Disable any active LEDs
+  cube.reset();
+  
   // Init runtime variables
   io.init();
   dead = false;

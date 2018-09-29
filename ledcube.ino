@@ -20,16 +20,5 @@ void loop()
   {
     snake.update();
   }
-  snake.reset();
-  /*
-  for (int i = 0; i < 4; i++)
-    for (int j = 0; j < 4; j++)
-      for (int k = 0; k < 4; k++)
-      {
-        cube.bufferLED(k, j, i);
-        cube.display();
-      }
-  cube.reset();
-  */
-        
+  snake.reset();      
 }
