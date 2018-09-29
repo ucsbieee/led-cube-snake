@@ -66,75 +66,34 @@ void Snake::init()
 
 void Snake::logic()
 {
-  Coord next;
+  Coord next = { snake.front().x, snake.front().y, snake.front().z };
 
   // Check if the next location is valid
   switch (io.getDir())
   {
     case xpos:
-      {
-        next = { snake.front().x + 1, snake.front().y, snake.front().z };
-        if (next.x > 3)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.x + 1 <= 3 ? next.x += 1 : dead = true;
       break;
     case xneg:
-      {
-        next = { snake.front().x - 1, snake.front().y, snake.front().z };
-        if (next.x < 0)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.x - 1 >= 0 ? next.x -= 1 : dead = true;
       break;
     case ypos:
-      {
-        next = { snake.front().x, snake.front().y + 1, snake.front().z };
-        if (next.y > 3)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.y + 1 <= 3 ? next.y += 1 : dead = true;
       break;
     case yneg:
-      {
-        next = { snake.front().x, snake.front().y - 1, snake.front().z };
-        if (next.y < 0)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.y - 1 >= 0 ? next.y -= 1 : dead = true;
       break;
     case zpos:
-      {
-        next = { snake.front().x, snake.front().y, snake.front().z + 1 };
-        if (next.z > 3)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.z + 1 <= 3 ? next.z += 1 : dead = true;
       break;
     case zneg:
-      {
-        next = { snake.front().x, snake.front().y, snake.front().z - 1 };
-        if (next.z < 0)
-        {
-          dead = true;
-          return;
-        }
-      }
+      next.z - 1 >= 0 ? next.z -= 1 : dead = true;
       break;
     default:
       dead = true;
-      return;
+      break;
   }
+  if (dead) return;
 
   // If the food is captured, do not delete the tail
   if (next.x == food.x && next.y == food.y && next.z == food.z)
