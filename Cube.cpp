@@ -19,8 +19,8 @@ void Cube::bufferLED(byte x, byte y, byte z)
   // Convert the x,y position to a mapping of the format used for the buffer
   /* 
    *  (0, 0) --> 000000000000001   -> 1
-   *  (0, 1) --> 000000000000010   -> 2
-   *  (0, 2) --> 000000000000100   -> 4
+   *  (1, 0) --> 000000000000010   -> 2
+   *  (2, 0) --> 000000000000100   -> 4
    *  ...
    *  (3, 3) --> 1000000000000000  -> 32768
   */
